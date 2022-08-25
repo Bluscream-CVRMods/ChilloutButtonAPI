@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace ChilloutButtonAPI.UI
-{
-    public class SubMenu
-    {
-        public static List<SubMenu> AllSubMenus = new List<SubMenu>();
+namespace ChilloutButtonAPI.UI {
+    public class SubMenu {
+        public static List<SubMenu> AllSubMenus = new();
 
         public GameObject gameObject;
 
@@ -22,27 +16,22 @@ namespace ChilloutButtonAPI.UI
         private Transform PageContent => gameObject.transform.Find("Scroll View/Viewport/Content");
         private static Transform MainPageContent => ChilloutButtonAPIMain.MainPage.gameObject.transform.Find("Scroll View/Viewport/Content");
 
-        public SubMenu()
-        {
+        public SubMenu() {
             AllSubMenus.Add(this);
         }
 
-        public void SetActive(bool state, bool IsQMClose = false)
-        {
-            if (!IsQMClose)
-            {
+        public void SetActive(bool state, bool IsQMClose = false) {
+            if (!IsQMClose) {
                 LastState = state;
             }
 
             gameObject.SetActive(state);
         }
 
-        public SubMenu AddSubMenu(string Title, string ButtonText = null)
-        {
+        public SubMenu AddSubMenu(string Title, string ButtonText = null) {
             ButtonText ??= Title;
 
-            var menu = new SubMenu
-            {
+            SubMenu menu = new() {
                 gameObject = Object.Instantiate(ChilloutButtonAPIMain.MainPage.gameObject, gameObject.transform.parent)
             };
 
@@ -52,20 +41,18 @@ namespace ChilloutButtonAPI.UI
             menu.gameObject.transform.localRotation = gameObject.transform.localRotation;
             menu.SetActive(false);
 
-            var BackButton = menu.gameObject.transform.Find("Scroll View/Viewport/Content/Back Button");
+            Transform BackButton = menu.gameObject.transform.Find("Scroll View/Viewport/Content/Back Button");
             BackButton.Find("Text (TMP) Title").GetComponent<TextMeshProUGUI>().text = Title;
 
             BackButton.Find("Text (TMP)").gameObject.SetActive(true);
 
             BackButton.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
-            BackButton.GetComponent<Button>().onClick.AddListener(() =>
-            {
+            BackButton.GetComponent<Button>().onClick.AddListener(() => {
                 menu.SetActive(false);
                 SetActive(true);
             });
 
-            AddButton(ButtonText, $"Enter The {Title} SubMenu.", () =>
-            { 
+            _ = AddButton(ButtonText, $"Enter The {Title} SubMenu.", () => {
                 SetActive(false);
                 menu.SetActive(true);
             });
@@ -73,16 +60,14 @@ namespace ChilloutButtonAPI.UI
             return menu;
         }
 
-        public GameObject AddButton(string Text, string Tooltip, Action OnClick)
-        {
-            var CopiedButton = Object.Instantiate(MainPageContent.Find("Button").gameObject, PageContent);
+        public GameObject AddButton(string Text, string Tooltip, Action OnClick) {
+            GameObject CopiedButton = Object.Instantiate(MainPageContent.Find("Button").gameObject, PageContent);
 
             CopiedButton.transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text = Text;
             CopiedButton.GetOrAddComponent<ChilloutButtonAPIMain.ToolTipStore>().Tooltip = Tooltip;
 
             CopiedButton.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
-            CopiedButton.GetComponent<Button>().onClick.AddListener(() =>
-            {
+            CopiedButton.GetComponent<Button>().onClick.AddListener(() => {
                 OnClick?.Invoke();
             });
 
@@ -91,9 +76,8 @@ namespace ChilloutButtonAPI.UI
             return CopiedButton;
         }
 
-        public GameObject AddToggle(string Text, string Tooltip, Action<bool> OnToggle, bool DefaultState)
-        {
-            var CopiedToggle = Object.Instantiate(MainPageContent.Find("Toggle").gameObject, PageContent);
+        public GameObject AddToggle(string Text, string Tooltip, Action<bool> OnToggle, bool DefaultState) {
+            GameObject CopiedToggle = Object.Instantiate(MainPageContent.Find("Toggle").gameObject, PageContent);
 
             CopiedToggle.transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text = Text;
             CopiedToggle.GetOrAddComponent<ChilloutButtonAPIMain.ToolTipStore>().Tooltip = Tooltip;
@@ -101,8 +85,7 @@ namespace ChilloutButtonAPI.UI
             CopiedToggle.GetComponent<Toggle>().isOn = DefaultState;
 
             CopiedToggle.GetComponent<Toggle>().onValueChanged = new Toggle.ToggleEvent();
-            CopiedToggle.GetComponent<Toggle>().onValueChanged.AddListener(v =>
-            {
+            CopiedToggle.GetComponent<Toggle>().onValueChanged.AddListener(v => {
                 OnToggle?.Invoke(v);
             });
 
@@ -111,9 +94,8 @@ namespace ChilloutButtonAPI.UI
             return CopiedToggle;
         }
 
-        public GameObject AddSlider(string Text, string Tooltip, Action<float> OnSlide, float DefaultValue, float MinValue = 0f, float MaxValue = 1f)
-        {
-            var CopiedSlider = Object.Instantiate(MainPageContent.Find("Slider").gameObject, PageContent);
+        public GameObject AddSlider(string Text, string Tooltip, Action<float> OnSlide, float DefaultValue, float MinValue = 0f, float MaxValue = 1f) {
+            GameObject CopiedSlider = Object.Instantiate(MainPageContent.Find("Slider").gameObject, PageContent);
 
             CopiedSlider.transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text = Text;
             CopiedSlider.transform.Find("Slider").GetOrAddComponent<ChilloutButtonAPIMain.ToolTipStore>().Tooltip = Tooltip;
@@ -123,8 +105,7 @@ namespace ChilloutButtonAPI.UI
             CopiedSlider.transform.Find("Slider").GetComponent<Slider>().value = DefaultValue;
 
             CopiedSlider.transform.Find("Slider").GetComponent<Slider>().onValueChanged = new Slider.SliderEvent();
-            CopiedSlider.transform.Find("Slider").GetComponent<Slider>().onValueChanged.AddListener(v =>
-            {
+            CopiedSlider.transform.Find("Slider").GetComponent<Slider>().onValueChanged.AddListener(v => {
                 OnSlide?.Invoke(v);
             });
 
@@ -133,9 +114,8 @@ namespace ChilloutButtonAPI.UI
             return CopiedSlider;
         }
 
-        public GameObject AddLabel(string Text, string Tooltip = "")
-        {
-            var CopiedLabel = Object.Instantiate(MainPageContent.Find("Text (TMP)").gameObject, PageContent);
+        public GameObject AddLabel(string Text, string Tooltip = "") {
+            GameObject CopiedLabel = Object.Instantiate(MainPageContent.Find("Text (TMP)").gameObject, PageContent);
 
             CopiedLabel.GetComponent<TextMeshProUGUI>().text = Text;
             CopiedLabel.GetOrAddComponent<ChilloutButtonAPIMain.ToolTipStore>().Tooltip = Tooltip;
