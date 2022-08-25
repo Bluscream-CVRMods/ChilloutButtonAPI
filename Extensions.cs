@@ -53,6 +53,7 @@ namespace ChilloutButtonAPI {
             return GrabbedObjects;
         }
 
+        [Obsolete]
         public static T[] GetAllInstancesOfAllScenes<T>(bool includeInactive = false, Func<T, bool> Filter = null) where T : Behaviour {
             IEnumerable<GameObject> AllRootObjects = SceneManager.GetAllScenes().SelectMany(o => o.GetRootGameObjects());
 

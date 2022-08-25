@@ -39,6 +39,7 @@ namespace ChilloutButtonAPI.UI {
 
             menu.gameObject.transform.localPosition = gameObject.transform.localPosition;
             menu.gameObject.transform.localRotation = gameObject.transform.localRotation;
+            menu.gameObject.layer = LayerMask.NameToLayer("UI");
             menu.SetActive(false);
 
             Transform BackButton = menu.gameObject.transform.Find("Scroll View/Viewport/Content/Back Button");
