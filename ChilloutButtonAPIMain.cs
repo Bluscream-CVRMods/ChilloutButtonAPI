@@ -106,16 +106,10 @@ namespace ChilloutButtonAPI {
 
                         OurUIParent.layer = LayerMask.NameToLayer("UI");
                         var canvas = OurUIParent.GetComponent<Canvas>();
-                        MelonLogger.Warning("Sorting Layer: {0} ({1})", canvas.sortingLayerName, canvas.sortingLayerID);
-                        MelonLogger.Warning("Sorting Order: {0}", canvas.sortingOrder);
-                        MelonLogger.Warning("Sorting Override: {0}", canvas.overrideSorting);
                         canvas.sortingLayerID = 10;
                         canvas.sortingLayerName = "UI";
                         canvas.sortingOrder = 10;
                         canvas.overrideSorting = true;
-                        MelonLogger.Warning("Sorting Layer: {0} ({1})", canvas.sortingLayerName, canvas.sortingLayerID);
-                        MelonLogger.Warning("Sorting Order: {0}", canvas.sortingOrder);
-                        MelonLogger.Warning("Sorting Override: {0}", canvas.overrideSorting);
 
                         OurUIParent.transform.SetParent(QM);
                         ApplyUISettings(true);
